@@ -59,7 +59,7 @@ class MyLogger(object):
                         self.logger.log(self.level, message.rstrip())
 
 
-ad = AttachmentDownloader(Credentials("build18.picframe", "Noraisgod!"), 1, PIC_LOCATION)
+ad = AttachmentDownloader(Credentials.readFromFile("../credentials.txt"), 1, PIC_LOCATION)
 
 app = App(1500, PIC_LOCATION)
 app.show_slides()
