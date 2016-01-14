@@ -63,15 +63,3 @@ class App(tk.Tk):
                     + self.pictures[self.picCount + 1:]
             break
         self.after(5000, self.update_cycle)
-
-# set milliseconds time between slides
-delay = 3500
-
-# get a series of gif images you have in the working folder
-# or use full path, or set directory to where the images are
-folder = 'Pictures/'
-
-app = App(delay, folder)
-app.show_slides()
-app.update_cycle()
-app.run()
