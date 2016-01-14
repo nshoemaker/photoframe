@@ -9,7 +9,7 @@ class GmailConnection:
         self.credential = credential
         self.imapSession = None
 
-    def login(self):
+    def _login(self):
         try:
             self.imapSession = imaplib.IMAP4_SSL('imap.gmail.com')
             typ, accountDetails = self.imapSession.login(self.credential.username, self.credential.password)
@@ -21,16 +21,25 @@ class GmailConnection:
 
     def getMessagesSinceUID(self, uid):
         try:
+            self._login()
             typ, data = self.imapSession.uid("SEARCH", "UID", str(uid) + ":*")
             if typ != 'OK':
                 raise imaplib.IMAP4.error("Could not retrieve new messages.")
-            return data[0].split()
-        except:
+            allIds = data[0].split()
+            if len(allIds) != 0 and int(allIds[0]) < uid:
+                return allIds[1:]
+            return allIds
+        except imaplib.IMAP4.error:
+            raise
+        except Exception, e:
             raise imaplib.IMAP4.error("Could not retrieve new messages.")
+        finally:
+            self._logout()
 
     def getAttachmentsFromMessage(self, uid, extensions=None):
         attachments = []
         try:
+            self._login()
             typ, messageParts = self.imapSession.uid("FETCH", uid, '(RFC822)')
             if typ != 'OK':
                 raise
@@ -46,11 +55,17 @@ class GmailConnection:
                     extension = os.path.splitext(fileName)[1][1:].lower()
                     if extensions is None or extension in extensions:
                         attachments.append(part)
+        except imaplib.IMAP4.error:
+            raise
         except Exception, e:
-            print e
             raise imaplib.IMAP4.error("Could not get attachment.")
+        finally:
+            self._logout()
         return attachments
 
-    def logout(self):
-        self.imapSession.close()
-        self.imapSession.logout()
+    def _logout(self):
+        try:
+            self.imapSession.close()
+            self.imapSession._logout()
+        except:
+            return
