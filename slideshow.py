@@ -1,6 +1,8 @@
 from itertools import cycle
 from PIL import ImageTk, Image
 from os import walk
+import pyinotify
+import thread
 
 try:
     # Python2
@@ -9,7 +11,7 @@ except ImportError:
     # Python3
     import tkinter as tk
 
-class App(tk.Tk):
+class App(tk.Tk, pyinotify.ProcessEvent):
     '''Tk window/label adjusts to size of image'''
     def __init__(self, delay, folder):
         # the root will be self
@@ -28,8 +30,18 @@ class App(tk.Tk):
         self.picture_display = tk.Label(self, height=h, width=w)
         self.picture_display.configure(background='black')
         self.picture_display.pack()
-        self.filenames = set()
         self.curImage = None
+        # Start file monitor
+        self.wm = pyinotify.WatchManager()
+        self.wm.add_watch(self.folder, pyinotify.IN_CLOSE_WRITE)
+        self.notifier = pyinotify.Notifier(self.wm, self)
+        thread.start_new_thread(self.notifier.loop, ())
+        self.getInitialPics()
+
+    def getInitialPics(self):
+        for (dirPath, dirNames, filenames) in walk(self.folder):
+            for filename in filenames:
+                self.pictures.append(self.folder + "/" + filename)
 
     def show_slides(self):
         '''cycle through the images and show them'''
@@ -46,15 +58,10 @@ class App(tk.Tk):
     def run(self):
         self.mainloop()
 
+    def process_IN_CLOSE_WRITE(self, event):
+        self.pictures = self.pictures[:self.picCount + 1] \
+            + [event.pathname] \
+            + self.pictures[self.picCount + 1:]
+    
     def update_cycle(self):
-        ''' Checks if new file has been added and then adds it'''
-        notSeen = set()
-        for (dirpath, dirnames, filenames) in walk(self.folder):
-            for filename in filenames:
-                if ".DS_Store" not in filename and filename not in self.filenames:
-                    self.filenames.add(filename)
-                    self.pictures = self.pictures[:self.picCount + 1] \
-                    + [self.folder + "/" + filename] \
-                    + self.pictures[self.picCount + 1:]
-            break
         self.after(5000, self.update_cycle)
