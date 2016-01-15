@@ -4,14 +4,13 @@ import thread
 import os
 import time
 import io
-import Tkinter as tk
 from PIL import Image
 
 class AttachmentDownloader:
     LAST_UID_FILE = "meta.txt"
 
-    def __init__(self, credentials, pollingInterval, attachmentsDirectory):
-        self.screenSize = (tk.Tk().winfo_screenwidth(), tk.Tk().winfo_screenheight())
+    def __init__(self, credentials, pollingInterval, attachmentsDirectory, screenSize):
+        self.screenSize = screenSize
         self.emailConnection = GmailConnection(credentials)
         self.pollingInterval = pollingInterval
         self.lastUid = -1
