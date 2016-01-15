@@ -35,7 +35,7 @@ class AttachmentDownloader:
                         filePath = os.path.join(self.attachmentsDirectory, uid + "_" + fileName)
                         img = Image.open(io.BytesIO(att.get_payload(decode=True)))
                         w, h = img.size
-                        scale = max(float(self.screenSize[0]) / w, float(self.screenSize[1])/h)
+                        scale = min(float(self.screenSize[0]) / w, float(self.screenSize[1])/h)
                         img = img.resize((int(w*scale), int(h*scale)), Image.ANTIALIAS)
                         img.save(filePath)
                     self.setLastUid(uid)
