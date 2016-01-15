@@ -29,16 +29,17 @@ class App(tk.Tk):
         self.picture_display.configure(background='black')
         self.picture_display.pack()
         self.filenames = set()
+        self.curImage = None
 
     def show_slides(self):
         '''cycle through the images and show them'''
         # CHeck if pictures is empty
         if self.pictures:
-            img_object = ImageTk.PhotoImage(Image.open(self.pictures[self.picCount]))
+            self.curImage = ImageTk.PhotoImage(Image.open(self.pictures[self.picCount]))
             self.picCount += 1
             if self.picCount >= len(self.pictures):
                 self.picCount = 0
-            self.picture_display.config(image=img_object)
+            self.picture_display.config(image=self.curImage)
         
         self.after(self.delay, self.show_slides)
 
