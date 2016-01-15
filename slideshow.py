@@ -34,7 +34,7 @@ class App(tk.Tk):
         '''cycle through the images and show them'''
         # CHeck if pictures is empty
         if self.pictures:
-            img_object = self.pictures[self.picCount]
+            img_object = ImageTk.PhotoImage(Image.open(self.pictures[self.picCount]))
             self.picCount += 1
             if self.picCount >= len(self.pictures):
                 self.picCount = 0
@@ -53,7 +53,7 @@ class App(tk.Tk):
                 if ".DS_Store" not in filename and filename not in self.filenames:
                     self.filenames.add(filename)
                     self.pictures = self.pictures[:self.picCount + 1] \
-                    + [ImageTk.PhotoImage(Image.open(self.folder + "/" + filename))] \
+                    + [self.folder + "/" + filename] \
                     + self.pictures[self.picCount + 1:]
             break
         self.after(5000, self.update_cycle)
