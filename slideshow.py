@@ -18,6 +18,7 @@ class App(tk.Tk):
         w, h = self.winfo_screenwidth(), self.winfo_screenheight()
         self.overrideredirect(1)
         self.geometry('{0}x{1}+0+0'.format(w, h))
+        self.configure(background='black')
         self.delay = delay
         self.w = w
         self.h = h
@@ -25,6 +26,7 @@ class App(tk.Tk):
         self.pictures = []
         self.picCount = 0
         self.picture_display = tk.Label(self)
+        self.picture_display.configure(background='black')
         self.picture_display.pack()
         self.filenames = set()
 
@@ -51,7 +53,7 @@ class App(tk.Tk):
                 if ".DS_Store" not in filename and filename not in self.filenames:
                     self.filenames.add(filename)
                     self.pictures = self.pictures[:self.picCount + 1] \
-                    + [ImageTk.PhotoImage(Image.open(self.folder + "/" + filename).resize((self.w, self.h), Image.ANTIALIAS))] \
+                    + [ImageTk.PhotoImage(Image.open(self.folder + "/" + filename))] \
                     + self.pictures[self.picCount + 1:]
             break
         self.after(5000, self.update_cycle)
