@@ -25,7 +25,7 @@ class App(tk.Tk):
         self.folder = folder
         self.pictures = []
         self.picCount = 0
-        self.picture_display = tk.Label(self)
+        self.picture_display = tk.Label(self, height=h, width=w)
         self.picture_display.configure(background='black')
         self.picture_display.pack()
         self.filenames = set()
