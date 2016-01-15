@@ -24,10 +24,6 @@ class App(tk.Tk):
         self.folder = folder
         self.pictures = []
         self.picCount = 0
-        # allows repeat cycling through the pictures
-        # store as (img_object, img_name) tuple
-        # self.pictures = cycle((ImageTk.PhotoImage(Image.open(image).resize((w, h), Image.ANTIALIAS)), image)
-        #                       for image in image_files)
         self.picture_display = tk.Label(self)
         self.picture_display.pack()
         self.filenames = set()
@@ -41,11 +37,7 @@ class App(tk.Tk):
             if self.picCount >= len(self.pictures):
                 self.picCount = 0
             self.picture_display.config(image=img_object)
-        # next works with Python26 or higher
-        #img_object, img_name = next(self.pictures)
         
-        # shows the image filename, but could be expanded
-        # to show an associated description of the image
         self.after(self.delay, self.show_slides)
 
     def run(self):
