@@ -33,11 +33,11 @@ class AttachmentDownloader:
                     for att in atts:
                         fileName = att.get_filename()
                         filePath = os.path.join(self.attachmentsDirectory, uid + "_" + fileName)
-                        img = Image.open(io.BytesIO(att.get_payload(decode=True))).resize(self.screenSize, Image.ANTIALIAS)
+                        img = Image.open(io.BytesIO(att.get_payload(decode=True)))
+                        w, h = img.size
+                        scale = max(float(self.screenSize[0]) / w, float(self.screenSize[1])/h)
+                        img = img.resize((w*scale, h*scale), Image.ANTIALIAS)
                         img.save(filePath)
-                        #fp = open(filePath, 'wb')
-                        #fp.write(att.get_payload(decode=True))
-                        #fp.close()
                     self.setLastUid(uid)
             except Exception, e:
                 print e
