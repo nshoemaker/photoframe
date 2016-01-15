@@ -63,4 +63,4 @@ app.show_slides()
 app.update_cycle()
 app.run()
 
-ad = AttachmentDownloader(Credentials.readFromFile("../credentials.txt"), 1, PIC_LOCATION, (app.winfo_screenwidth, app.winfo_screenheight))
+ad = AttachmentDownloader(Credentials.readFromFile("../credentials.txt"), 1, PIC_LOCATION, (app.winfo_screenwidth(), app.winfo_screenheight()))
