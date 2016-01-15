@@ -18,6 +18,7 @@ class App(tk.Tk):
         w, h = self.winfo_screenwidth(), self.winfo_screenheight()
         self.overrideredirect(1)
         self.geometry('{0}x{1}+0+0'.format(w, h))
+        self.configure(background='black')
         self.delay = delay
         self.w = w
         self.h = h
@@ -29,6 +30,7 @@ class App(tk.Tk):
         # self.pictures = cycle((ImageTk.PhotoImage(Image.open(image).resize((w, h), Image.ANTIALIAS)), image)
         #                       for image in image_files)
         self.picture_display = tk.Label(self)
+        self.picture_display.configure(background='black')
         self.picture_display.pack()
         self.filenames = set()
 
