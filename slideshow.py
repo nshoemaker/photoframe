@@ -58,9 +58,8 @@ class App(tk.Tk):
             for filename in filenames:
                 if ".DS_Store" not in filename and filename not in self.filenames:
                     self.filenames.add(filename)
-                    #self.pictures = self.pictures[:self.picCount + 1] \
-                    #+ [ImageTk.PhotoImage(Image.open(self.folder + "/" + filename).resize((self.w, self.h), Image.ANTIALIAS))] \
-                    #+ self.pictures[self.picCount + 1:]
-                    self.pictures.append(ImageTk.PhotoImage(Image.open(self.folder + "/" + filename).resize((self.w, self.h), Image.ANTIALIAS)))
+                    self.pictures = self.pictures[:self.picCount + 1] \
+                    + [ImageTk.PhotoImage(Image.open(self.folder + "/" + filename).resize((self.w, self.h), Image.ANTIALIAS))] \
+                    + self.pictures[self.picCount + 1:]
             break
         self.after(5000, self.update_cycle)
