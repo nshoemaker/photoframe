@@ -3,11 +3,15 @@ from GmailConnection import GmailConnection
 import thread
 import os
 import time
+import io
+import Tkinter as tk
+from PIL import Image
 
 class AttachmentDownloader:
     LAST_UID_FILE = "meta.txt"
 
     def __init__(self, credentials, pollingInterval, attachmentsDirectory):
+        self.screenSize = (tk.Tk().winfo_screenwidth(), tk.Tk().winfo_screenheight())
         self.emailConnection = GmailConnection(credentials)
         self.pollingInterval = pollingInterval
         self.lastUid = -1
@@ -30,9 +34,11 @@ class AttachmentDownloader:
                     for att in atts:
                         fileName = att.get_filename()
                         filePath = os.path.join(self.attachmentsDirectory, uid + "_" + fileName)
-                        fp = open(filePath, 'wb')
-                        fp.write(att.get_payload(decode=True))
-                        fp.close()
+                        img = Image.open(io.BytesIO(att.get_payload(decode=True))).resize(self.screenSize, Image.ANTIALIAS)
+                        img.save(filePath)
+                        #fp = open(filePath, 'wb')
+                        #fp.write(att.get_payload(decode=True))
+                        #fp.close()
                     self.setLastUid(uid)
             except Exception, e:
                 print e
