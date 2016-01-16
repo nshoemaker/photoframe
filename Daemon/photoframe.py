@@ -58,9 +58,9 @@ class MyLogger(object):
                 if message.rstrip() != "":
                         self.logger.log(self.level, message.rstrip())
 
-app = App(3000, PIC_LOCATION)
+app = App(15000, PIC_LOCATION)
 
-ad = AttachmentDownloader(Credentials.readFromFile("../credentials.txt"), 1, PIC_LOCATION, (app.winfo_screenwidth(), app.winfo_screenheight()))
+ad = AttachmentDownloader(Credentials.readFromFile("../credentials.txt"), 30 * 60, PIC_LOCATION, (app.winfo_screenwidth(), app.winfo_screenheight()))
 
 app.show_slides()
 app.update_cycle()
