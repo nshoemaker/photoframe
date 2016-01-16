@@ -65,9 +65,9 @@ class App(tk.Tk, pyinotify.ProcessEvent):
         self.mainloop()
 
     def process_IN_CLOSE_WRITE(self, event):
-        self.pictures = self.pictures[:self.picCount + 1] \
+        self.pictures = self.pictures[:self.picCount] \
             + [event.pathname] \
-            + self.pictures[self.picCount + 1:]
+            + self.pictures[self.picCount:]
     
     def update_cycle(self):
         self.after(5000, self.update_cycle)
