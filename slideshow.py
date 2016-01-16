@@ -30,6 +30,10 @@ class App(tk.Tk):
         self.picture_display.pack()
         self.filenames = set()
         self.curImage = None
+        self.bind('q', self.exitapp)
+
+    def exitapp(self):
+        self.destroy()
 
     def show_slides(self):
         '''cycle through the images and show them'''
