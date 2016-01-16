@@ -46,7 +46,7 @@ class App(tk.Tk, pyinotify.ProcessEvent):
     def getInitialPics(self):
         for (dirPath, dirNames, filenames) in walk(self.folder):
             for filename in filenames:
-                self.pictures.append(self.folder + "/" + filename)
+                self.pictures.insert(randrange(len(self.pictures)+1), self.folder + "/" + filename)
 
     def show_slides(self):
         '''cycle through the images and show them'''
