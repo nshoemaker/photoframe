@@ -29,6 +29,8 @@ class AttachmentDownloader:
 
             
             for uid in messageIds:
+                success = True
+                msgImgs = {}
                 try:
                     atts = self.emailConnection.getAttachmentsFromMessage(uid, ["png", "jpg", "jpeg", "gif"])
                 except Exception, e:
@@ -42,11 +44,18 @@ class AttachmentDownloader:
                         w, h = img.size
                         scale = min(float(self.screenSize[0]) / w, float(self.screenSize[1])/h)
                         img = img.resize((int(w*scale), int(h*scale)), Image.ANTIALIAS)
-                        img.save(filePath)
+                        msgImgs[filePath] = img
                     except Exception, e:
                         print e
+                        success = False
                         break
-                self.setLastUid(uid)
+                if success:
+                    try:
+                        for filename, img in msgImgs:
+                            img.save(filename)
+                    except Exception, e:
+                        print e
+                    self.setLastUid(uid)
             
 
             time.sleep(self.pollingInterval)
