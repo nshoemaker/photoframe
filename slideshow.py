@@ -3,6 +3,7 @@ from PIL import ImageTk, Image
 from os import walk
 import pyinotify
 import thread
+import random
 
 try:
     # Python2
@@ -46,7 +47,7 @@ class App(tk.Tk, pyinotify.ProcessEvent):
     def getInitialPics(self):
         for (dirPath, dirNames, filenames) in walk(self.folder):
             for filename in filenames:
-                self.pictures.insert(randrange(len(self.pictures)+1), self.folder + "/" + filename)
+                self.pictures.insert(random.randint(0, len(self.pictures)), self.folder + "/" + filename)
 
     def show_slides(self):
         '''cycle through the images and show them'''
