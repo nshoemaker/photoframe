@@ -18,9 +18,9 @@ class App(tk.Tk, pyinotify.ProcessEvent):
         tk.Tk.__init__(self)
         # set x, y position only
         w, h = self.winfo_screenwidth(), self.winfo_screenheight()
-        self.overrideredirect(1)
         self.geometry('{0}x{1}+0+0'.format(w, h))
         self.configure(background='black')
+        self.attributes('-fullscreen', True)
         self.delay = delay
         self.w = w
         self.h = h
@@ -31,6 +31,7 @@ class App(tk.Tk, pyinotify.ProcessEvent):
         self.picture_display.configure(background='black')
         self.picture_display.pack()
         self.curImage = None
+        self.focus_force()
         self.bind('q', self.exitapp)
         # Start file monitor
         self.wm = pyinotify.WatchManager()
@@ -39,7 +40,7 @@ class App(tk.Tk, pyinotify.ProcessEvent):
         thread.start_new_thread(self.notifier.loop, ())
         self.getInitialPics()
 
-    def exitapp(self):
+    def exitapp(self, e):
         self.destroy()
 
     def getInitialPics(self):
