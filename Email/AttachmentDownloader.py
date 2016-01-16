@@ -51,8 +51,8 @@ class AttachmentDownloader:
                         break
                 if success:
                     try:
-                        for filename, img in msgImgs:
-                            img.save(filename)
+                        for filename in msgImgs:
+                            img.save(msgImgs[filename])
                     except Exception, e:
                         print e
                     self.setLastUid(uid)
