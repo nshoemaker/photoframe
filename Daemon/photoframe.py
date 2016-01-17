@@ -65,3 +65,6 @@ ad = AttachmentDownloader(Credentials.readFromFile("../credentials.txt"), 30 * 6
 app.show_slides()
 app.update_cycle()
 app.run()
+
+ad.close()
+ad.join()

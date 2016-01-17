@@ -1,7 +1,9 @@
 import email
-import imaplib
+import imaplib2 as imaplib
 from Credentials import Credentials
 import os
+from threading import *
+import thread
 
 class GmailConnection:
 
@@ -22,7 +24,7 @@ class GmailConnection:
     def getMessagesSinceUID(self, uid):
         try:
             self._login()
-            typ, data = self.imapSession.uid("SEARCH", "UID", str(uid) + ":*")
+            typ, data = self.imapSession.uid("SEARCH", "UID", bytearray(str(uid) + ":*"))
             if typ != 'OK':
                 raise imaplib.IMAP4.error("Could not retrieve new messages.")
             allIds = data[0].split()
@@ -62,6 +64,17 @@ class GmailConnection:
         finally:
             self._logout()
         return attachments
+
+    def waitForMessage(self, event, callback):
+        try:
+            self._login()
+            self.imapSession.idle(callback=callback)
+            event.wait()
+            event.clear()
+        except Exception, e:
+            print e
+        finally:
+            self._logout()
 
     def _logout(self):
         try:
