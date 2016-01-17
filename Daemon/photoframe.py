@@ -60,7 +60,7 @@ class MyLogger(object):
 
 app = App(6000, PIC_LOCATION)
 
-ad = AttachmentDownloader(Credentials.readFromFile("../credentials.txt"), (app.winfo_screenwidth(), app.winfo_screenheight()))
+ad = AttachmentDownloader(Credentials.readFromFile("../credentials.txt"), PIC_LOCATION, (app.winfo_screenwidth(), app.winfo_screenheight()))
 
 app.show_slides()
 app.update_cycle()
