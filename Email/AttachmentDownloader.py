@@ -5,6 +5,7 @@ import os
 import time
 import io
 from PIL import Image
+from PIL.ExifTags import TAGS
 
 class AttachmentDownloader:
     LAST_UID_FILE = "meta.txt"
@@ -54,6 +55,15 @@ class AttachmentDownloader:
                             fileName = att.get_filename()
                             filePath = os.path.join(self.attachmentsDirectory, uid + "_" + fileName)
                             img = Image.open(io.BytesIO(att.get_payload(decode=True)))
+                            tmpName = fileName.lower()
+                            if tmpName.endswith(('.jpg', '.jpeg')):
+				exif = img._getexif()
+                                if exif:
+                                    orientation = exif.get(274, 1)
+                                    rotations = {1:0, 2:0, 3:180, 4:180, 5:270, 6:270, 7:90, 8:90}
+                                    img = img.rotate(rotations[orientation], expand=True)
+                                else:
+                                    print fileName + " has no exif"
                             w, h = img.size
                             scale = min(float(self.screenSize[0]) / w, float(self.screenSize[1])/h)
                             img = img.resize((int(w*scale), int(h*scale)), Image.ANTIALIAS)
