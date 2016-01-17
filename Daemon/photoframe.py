@@ -58,7 +58,7 @@ class MyLogger(object):
                 if message.rstrip() != "":
                         self.logger.log(self.level, message.rstrip())
 
-app = App(15000, PIC_LOCATION)
+app = App(6000, PIC_LOCATION)
 
 ad = AttachmentDownloader(Credentials.readFromFile("../credentials.txt"), 30 * 60, PIC_LOCATION, (app.winfo_screenwidth(), app.winfo_screenheight()))
 
