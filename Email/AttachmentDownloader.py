@@ -9,10 +9,9 @@ from PIL import Image
 class AttachmentDownloader:
     LAST_UID_FILE = "meta.txt"
 
-    def __init__(self, credentials, pollingInterval, attachmentsDirectory, screenSize):
+    def __init__(self, credentials, attachmentsDirectory, screenSize):
         self.screenSize = screenSize
         self.emailConnection = GmailConnection(credentials)
-        self.pollingInterval = pollingInterval
         self.lastUid = -1
         self.attachmentsDirectory = attachmentsDirectory
         if not os.path.exists(attachmentsDirectory):
@@ -74,13 +73,6 @@ class AttachmentDownloader:
                     return
         except Exception, e:
             print e
-
-
-    def setPollingInterval(self, interval):
-        self.pollingInterval = interval
-
-    def getpollingInterval(self):
-        return self.pollingInterval
 
     def getNextUid(self):
         if self.lastUid == -1:
